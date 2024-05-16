@@ -1,3 +1,4 @@
+
 .eunit
 deps
 *.o
@@ -12,3 +13,22 @@ rel/example_project
 _rel
 fcm.d
 relx
+.rebar3
+_*
+.eunit
+*.o
+*.beam
+*.plt
+*.swp
+*.swo
+.erlang.cookie
+ebin
+log
+erl_crash.dump
+.rebar
+logs
+_build
+.idea
+*.iml
+rebar3.crashdump
+*~
