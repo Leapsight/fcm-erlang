@@ -18,15 +18,18 @@
 
 -export([push/4]).
 
--spec start_pool_with_api_key(atom(), string()) -> {ok, pid()}.
+-spec start_pool_with_api_key(atom(), string()) ->
+       {ok, pid()} | {error, {already_started, pid()}} | {error, _}.
 start_pool_with_api_key(Name, ApiKey) ->
     fcm_sup:start_child(Name, #{fcm_key => ApiKey}).
 
--spec start_pool_with_json_service_file(atom(), string()) -> {ok, pid()}.
+-spec start_pool_with_json_service_file(atom(), string()) ->
+       {ok, pid()} | {error, {already_started, pid()}} | {error, _}.
 start_pool_with_json_service_file(Name, FilePath) ->
     fcm_sup:start_child(Name, #{service_file => FilePath}).
 
--spec start_pool_with_json_service_file_bin(atom(), binary()) -> {ok, pid()}.
+-spec start_pool_with_json_service_file_bin(atom(), binary()) ->
+       {ok, pid()} | {error, {already_started, pid()}} | {error, _}.
 start_pool_with_json_service_file_bin(Name, Bin) ->
     fcm_sup:start_child(Name, #{service_file_bin => Bin}).
 
@@ -38,7 +41,7 @@ stop(Name) ->
             atom(),
             binary() | list(binary()),
             list(tuple()) | map(),
-            integer()) -> list(tuple()).
+            integer()) -> list(tuple()) | {error, term()}.
 push(Name, RegIds, Message, Retry) when is_list(Message) ->
     push(Name, RegIds, maps:from_list(Message), Retry);
 push(Name, RegId, Message, Retry) when is_binary(RegId) ->
