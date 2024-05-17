@@ -2,7 +2,7 @@
 [{<<"base64url">>,{pkg,<<"base64url">>,<<"1.0.1">>},1},
  {<<"goldrush">>,{pkg,<<"goldrush">>,<<"0.1.9">>},1},
  {<<"google_oauth">>,
-  {git,"file:///Users/fcoronel/leapsight/google_oauth_erlang",
+  {git,"https://github.com/Leapsight/google_oauth_erlang.git",
        {ref,"84efc756a3548a39f66955b0ad08e799c9e45040"}},
   0},
  {<<"jsx">>,{pkg,<<"jsx">>,<<"3.0.0">>},0},
