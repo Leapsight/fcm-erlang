@@ -5,7 +5,9 @@
   {mod, {fcm_app, []}},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    sasl,
+    fcm
    ]},
   {env,[]},
   {modules, []},
