@@ -1,6 +1,6 @@
 {application, fcm,
  [{description, "An OTP application"},
-  {vsn, "2.0.0"},
+  {vsn, "2.1.0"},
   {registered, []},
   {mod, {fcm_app, []}},
   {applications,
