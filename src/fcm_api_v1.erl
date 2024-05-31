@@ -38,12 +38,12 @@ push([RegId| RegIds] = AllRegIds, Body,
             push(RegIds, Body, State0, Acc)
     end.
 
-append_token(#{message := Message} = M, Token) ->
-    M#{message => Message#{token => Token}};
-append_token(#{<<"message">> := Message} = M, Token) ->
-    M#{message => Message#{token => Token}};
+append_token(#{message := Message}, Token) ->
+    #{message => Message#{token => Token}};
+append_token(#{<<"message">> := Message}, Token) ->
+    #{<<"message">> => Message#{<<"token">> => Token}};
 append_token(Message, Token) ->
-    #{message => Message#{token => Token}}.
+    Message#{token => Token}.
 
 do_push(RegId, Message0, AuthKey, PushUrl) ->
     MapBody = append_token(Message0, RegId),
