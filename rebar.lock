@@ -3,7 +3,7 @@
  {<<"goldrush">>,{pkg,<<"goldrush">>,<<"0.1.9">>},1},
  {<<"google_oauth">>,
   {git,"https://github.com/Leapsight/google_oauth_erlang.git",
-       {ref,"468704c8e447908f6453607fd87754785f1a0378"}},
+       {ref,"24dea29a36a650c67fa350afd2e35a443487ff0b"}},
   0},
  {<<"jsx">>,{pkg,<<"jsx">>,<<"3.1.0">>},0},
  {<<"lager">>,{pkg,<<"lager">>,<<"3.9.2">>},0}]}.
