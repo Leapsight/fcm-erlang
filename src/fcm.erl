@@ -16,7 +16,7 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
--export([push/4]).
+-export([push/4, push/5]).
 
 -spec start_pool_with_api_key(atom(), string()) ->
        {ok, pid()} | {error, {already_started, pid()}} | {error, _}.
@@ -48,6 +48,19 @@ push(Name, RegId, Message, Retry) when is_binary(RegId) ->
     push(Name, [RegId], Message, Retry);
 push(Name, RegIds, Message, Retry) ->
     gen_server:call(Name, {send, RegIds, Message, Retry}).
+
+-spec push(
+            atom(),
+            binary() | list(binary()),
+            list(tuple()) | map(),
+            integer(),
+            integer()) -> list(tuple()) | {error, term()}.
+push(Name, RegIds, Message, Retry, Timeout) when is_list(Message) ->
+    push(Name, RegIds, maps:from_list(Message), Retry, Timeout);
+push(Name, RegId, Message, Retry, Timeout) when is_binary(RegId) ->
+    push(Name, [RegId], Message, Retry, Timeout);
+push(Name, RegIds, Message, Retry, Timeout) ->
+    gen_server:call(Name, {send, RegIds, Message, Retry}, Timeout).
 
 %% ========================================================================
 %% internal functions
