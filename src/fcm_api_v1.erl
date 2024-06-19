@@ -49,17 +49,18 @@ do_push(RegId, Message0, AuthKey, PushUrl) ->
     MapBody = append_token(Message0, RegId),
     Body = jsx:encode(MapBody),
     Request = {PushUrl, [{"Authorization", AuthKey}], "application/json; UTF-8", Body},
+    ?DEBUG("making HTTP Request: ~p", [Request]),
     case httpc:request(post, Request, ?HTTP_OPTS, ?REQ_OPTS) of
         {ok, {200, Result}} ->
             #{name := Name} = jsx:decode(Result, ?JSX_OPTS),
             MsgId = lists:last(binary:split(Name, <<"/">>, [global, trim_all])),
             {ok, MsgId};
-        {ok, {401, _}} ->
-            {error, refresh_token};
-        {ok, {StatusCode, Result} = Err} ->
-            ?ERROR_MSG("error sending notification result: ~p~n ~s~n", [StatusCode, Result]),
-            {error, Err};
-        Error -> Error
+        {ok, Error} ->
+            ?DEBUG("HTTP request failed: ~p", [Error]),
+            {error, Error};
+        Error -> 
+            ?DEBUG("HTTP request failed: ~p", [Error]),
+            Error
     end.
 
 reload_access_token(#{service_file := ServiceFile} = State) ->
