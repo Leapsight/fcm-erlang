@@ -50,7 +50,7 @@ do_push(RegId, Message0, AuthKey, PushUrl) ->
     Body = jsx:encode(MapBody),
     Request = {PushUrl, [{"Authorization", AuthKey}], "application/json; UTF-8", Body},
     ?DEBUG("making HTTP Request: ~p", [Request]),
-    case httpc:request(post, Request, ?HTTP_OPTS, ?REQ_OPTS) of
+    try httpc:request(post, Request, ?HTTP_OPTS, ?REQ_OPTS) of
         {ok, {200, Result}} ->
             #{name := Name} = jsx:decode(Result, ?JSX_OPTS),
             MsgId = lists:last(binary:split(Name, <<"/">>, [global, trim_all])),
@@ -60,7 +60,15 @@ do_push(RegId, Message0, AuthKey, PushUrl) ->
             {error, Error};
         Error -> 
             ?DEBUG("HTTP request failed: ~p", [Error]),
-            Error
+            {error, Error}
+    catch
+        Class:Reason:Stacktrace ->
+            _ = ?ERROR_MSG(
+                "Error while pushing notification with FCM"
+                " class=~p, reason=~p, request=~p, stacktrace=~p",
+                [Class, Reason, Request, Stacktrace]
+            ),
+            {error, Reason}
     end.
 
 reload_access_token(#{service_file := ServiceFile} = State) ->
